@@ -1,0 +1,15 @@
+program CMASMenuUI;
+
+uses
+  Vcl.Forms,
+  CMConsts in 'M:\Common Sources D10.4\CMConsts.pas',
+  CMLauncherIFrm in 'CMLauncherIFrm.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

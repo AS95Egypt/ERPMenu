@@ -1,0 +1,64 @@
+unit CMDatesTimesIFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, cxLookAndFeelPainters, StdCtrls, cxButtons, cxControls,
+  cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar,
+  RzLabel, cxGraphics, cxLookAndFeels, RzButton, siComp, Vcl.ComCtrls, dxCore,
+  cxDateUtils;
+
+type
+  TDisplayMode = (dmLinkToGL, dmCopyTransaction);
+
+  TCMDatesTimesIForm = class(TForm)
+    DatecxDateEdit: TcxDateEdit;
+    Label1: TLabel;
+    OKRzBitBtn: TcxButton;
+    CancelRzBitBtn: TcxButton;
+    procedure OKRzBitBtnClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    VenuDisplayMode: TDisplayMode;
+  public
+    { Public declarations }
+    constructor Create(AOwner: TComponent; AenuDisplayMode: TDisplayMode);
+  end;
+
+implementation
+
+uses
+  CMExceptionUtils, SCMessages, DateUtils, CMSystemAPI;
+{$R *.dfm}
+
+constructor TCMDatesTimesIForm.Create(AOwner: TComponent; AenuDisplayMode: TDisplayMode);
+begin
+  VenuDisplayMode := AenuDisplayMode;
+
+  inherited Create(AOwner, nil);
+end;
+
+procedure TCMDatesTimesIForm.FormCreate(Sender: TObject);
+begin
+  inherited;
+
+  case VenuDisplayMode of
+    dmLinkToGL:    Caption := siLang.GetTextOrDefault('IDS_FormCaption_LinkToGL');
+    dmCopyTransaction: Caption := siLang.GetTextOrDefault('IDS_FormCaption_CopyTransaction');
+  end;
+
+  DatecxDateEdit.Date := Dateof(Now);
+end;
+
+procedure TCMDatesTimesIForm.OKRzBitBtnClick(Sender: TObject);
+begin
+  if VarIsUndefined(DatecxDateEdit.EditingValue) then
+  begin
+    ModalResult := mrNone;
+    raise CMException.Create(SCMessagesEngine.RSCInterfaceMsg.NoDateSelected);
+  end; // if
+end;
+
+end.
